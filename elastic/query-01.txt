@@ -1,0 +1,78 @@
+POST /product/_doc
+{
+  "name": "Processing events with logstash",
+  "instructor": {
+    "firstName": "Bo",
+    "lastName": "Andersen"
+  }
+}
+
+PUT /product/_doc/1
+{
+  "name": "Complete guide to Elasticsearch",
+  "instructor": {
+    "firstName": "Bo",
+    "lastName": "Andersen"
+  }
+}
+
+PUT /product/_doc/1
+{
+  "name": "Complete guide to Elasticsearch",
+  "instructor": {
+    "firstName": "Bo",
+    "lastName": "Andersen"
+  },
+  "price": 195
+}
+
+POST /product/_doc/1/_update
+{
+  "doc": {
+    "price": 95,
+    "tags": [ "Elasticsearch" ]
+  }
+}
+
+POST /product/_doc/1/_update
+{
+  "script": "ctx._source.price += 10"
+}
+
+DELETE /product/_doc/1
+
+POST /product/_doc/1/_update
+{
+  "script": "ctx._source.price += 5",
+  "upsert": {
+    "price": 100
+  }
+}
+
+POST /product/_delete_by_query
+{
+  "query": {
+    "match": {
+      "price": 105
+    }
+  }
+}
+
+DELETE /product
+
+POST /product/_doc/_bulk
+{ "index": { "_id": "100" } }
+{ "price": 100 }
+{ "index": { "_id": "101" } }
+{ "price": 101 }
+
+POST /product/_doc/_bulk
+{ "update": { "_id": "100"} }
+{ "doc": { "price": 1000 } }
+{ "delete": { "_id": 101 } }
+
+GET /product/_doc/100
+
+
+
+
