@@ -73,6 +73,14 @@ POST /product/_doc/_bulk
 
 GET /product/_doc/100
 
+GET /_cat/health?v
 
+GET /_cat/nodes?v
+
+GET /_cat/indices?v
+
+GET /_cat/allocation?v
+
+GET /_cat/shards?v
 
 

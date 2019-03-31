@@ -1,0 +1,136 @@
+GET /product/_doc/_mapping
+
+meta fields
+ _index
+ _id
+ _source
+ _field_names
+ _routing
+ _version
+ _meta
+
+Field data types
+ - core: text, keyward, numeric, date (as string, integer, epoch)
+         boolean, binary (base 64 encoded), range
+ - complex: object, array of data (must be the same data type),
+            array of object (bad searchability)
+ - nested: specializd version of the object data type. enable arrays of object to be queaified each
+ - geo: geo_point (lat-lon), geo-shape (point, polygon, linestring, ..)
+ - specialized: ip address, completion, attachment
+ 
+PUT /product/_doc/_mapping
+{
+  "properties": {
+    "discount": {
+      "type": "double"
+    }
+  }
+}
+GET /product/_doc/_mapping
+
+DELETE /product
+PUT /product
+{
+  "mappings": {
+    "_doc": {
+      "dynamic": false,
+      "properties": {
+        "in_stock": {
+          "type": "integer"
+        },
+        "is_active": {
+          "type": "integer"
+        },
+        "price": {
+          "type": "integer"
+        },
+        "sold": {
+          "type": "long"
+        }
+      }
+    }
+  }
+}
+
+Mapping parameters
+ - coerce: can be used to disable coercision (automatically cleaning up values)
+ - copy_to: enables you to create custom fields. copies values, not terms
+ - dynamic: enables or disables adding fields to documents or innter objects dynamically
+ - properties: contains fields mappings, either at the top level of documents, or within inner objects
+ - norms: whether or not to disable storing norms (used for relevance scores)
+ - format: define the format for date fields
+ - null_value: replaces NULL values with the specified value
+ - fields: used to index fields in different ways
+ 
+Adding multi-fields mappings
+PUT /product/_doc/_mapping
+{
+  "properties": {
+    "description": {
+      "type": "text"
+    },
+    "name": {
+      "type": "text",
+      "fields": {
+        "keyword": {
+          "type": "keyword"
+        }
+      }
+    },
+    "tags": {
+      "type": "text",
+      "fields": {
+        "keyword": {
+          "type": "keyword"
+        }
+      }
+    }
+  }
+}
+GET /product/_doc/_mapping
+
+Defining custom date formats
+PUT /product/_doc/_mapping
+{
+  "properties": {
+    "created": {
+      "type": "date",
+      "format": "yyyy/MM/dd HH:mm:ss||yyyy/MM/dd"
+    }
+  }
+}
+GET /product/_doc/_mapping
+
+Pinking up new fields without dynamic mapping
+POST /product/_doc/3000
+{
+  "description": "Test",
+  "discount": 30
+}
+PUT /product/_doc/_mapping
+{
+  "properties": {
+    "discount": {
+      "type": "integer"
+    }
+  }
+}
+GET /product/_doc/_search
+{
+  "query": {
+    "match": {
+      "description": "Test"
+    }
+  }
+}
+GET /product/_doc/_search
+{
+  "query": {
+    "term": {
+      "discount": 30
+    }
+  }
+}
+POST /product/_update_by_query?conflicts=proceed
+
+
