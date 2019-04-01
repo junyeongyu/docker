@@ -1,0 +1,28 @@
+GET /product/_doc/_search
+{
+  "query": {
+    "match": {
+      "description": "test"
+    }
+  }
+}
+
+POST /product/_doc
+{
+  "name": "my product",
+  "tags": ["Meat"]
+}
+
+GET /product/_doc/_search?q=*
+GET /product/_doc/_search?q=name:pasta
+GET /product/_doc/_search?q=tags:Meat AND name:Tuna
+GET /product/_doc/_search
+{
+  "query": {
+    "query_string": {
+      "??": "name:pasta"
+    }
+  }
+}
+
+Introducing the Query DSL
