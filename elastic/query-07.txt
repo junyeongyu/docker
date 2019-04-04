@@ -13,6 +13,12 @@ POST /product/_doc
   "tags": ["Meat"]
 }
 
+POST /product/_doc
+{
+  "name": "your product",
+  "tags": ["Meat", "Banana"]
+}
+
 GET /product/_doc/_search?q=*
 GET /product/_doc/_search?q=name:pasta
 GET /product/_doc/_search?q=tags:Meat AND name:Tuna
@@ -26,3 +32,59 @@ GET /product/_doc/_search
 }
 
 Introducing the Query DSL
+ - Leaf query => category = 'Fruit'
+ - Compoud query => bool query
+ 
+GET /product/_doc/_search
+{
+  "query": {
+    "match_all": {
+      
+    }
+  }
+}
+
+Understanding relevance scores
+ - TF/IDF
+ - Okapi BM25: better at handling stop words, beterh tof field-length norm factor, can be configure wih parameters
+TF: how many tim doe th term apper in the fileds for a given document
+IDF: how dooften doe the term appear within the index (i.e. across all documents)?
+Field-legnh norm: How long is the field?
+GET /product/_doc/_search?explain=true
+{
+  "query": {
+    "term": {
+      "name": "my"
+    }
+  }
+}
+
+Debugging unexpected 
+GET /product/_doc/1/_explain
+{
+  "query": {
+    "term": {
+      "name": "my"
+    }
+  }
+}
+
+Query context vs Filter context (???????)
+
+Full-text query vs term level query
+GET /product/_doc/_search?explain=true
+{
+  "query": {
+    "match": {
+      "name": "my"
+    }
+  }
+}
+GET /product/_doc/_search?explain=true
+{
+  "query": {
+    "term": {
+      "name": "My"
+    }
+  }
+}

@@ -1,0 +1,162 @@
+download
+curl -H "Content-Type: application/json" -XPOST "http://localhost:9200/products/_doc/_bulk?pretty" --data-binary "@test-data.json"
+
+
+GET /product/_doc/_search?pretty
+GET /product/_doc/_search
+{
+  "query": {
+    "match": {
+      "tags": "my"
+    }
+  }
+}
+GET /product/_doc/_search
+{
+  "query": {
+    "match": {
+      "tags": "labster"
+    }
+  }
+}
+
+Term level queries
+GET /product/_doc/_search
+{
+  "query": {
+    "term": {
+      "is_active": {
+        "value": true
+      }
+    }
+  }
+}
+
+Searching for multiple terms
+GET /product/_doc/_search
+{
+  "query": {
+    "terms": {
+      "tags.keyword": [
+        "my tag",
+        "popstar"
+      ]
+    }
+  }
+}
+
+Retrieve documents from document
+GET /product/_doc/_search
+{
+  "query": {
+    "id": {
+      "values": [1, 2, 3]
+    }
+  }
+}
+GET /product/_doc/_search
+{
+  "query": {
+    "range": {
+      "in_stock": {
+        "gte": 1,
+        "lte": 5
+      }
+    }
+  }
+}
+GET /product/_doc/_search
+{
+  "query": {
+    "range": {
+      "created": {
+        "gte": "2010/01/01",
+        "lte": "2010/12/31"
+      }
+    }
+  }
+}
+GET /product/_doc/_search
+{
+  "query": {
+    "range": {
+      "created": {
+        "gte": "01-01-2010",
+        "lte": "31-12-2010",
+        "format": "dd-MM-yyyy"
+      }
+    }
+  }
+}
+GET /product/_doc/_search
+{
+  "query": {
+    "range": {
+      "created": {
+        "gte": "2010/01/01||-1y-1d"
+      }
+    }
+  }
+}
+GET /product/_doc/_search
+{
+  "query": {
+    "range": {
+      "created": {
+        "gte": "2010/01/01||/M-1y"
+      }
+    }
+  }
+}
+GET /product/_doc/_search
+{
+  "query": {
+    "range": {
+      "created": {
+        "gte": "now/1y"
+      }
+    }
+  }
+}
+GET /products/_doc/_search
+{
+  "query": {
+    "exists": {
+      "field": "tags"
+    }
+  }
+}
+
+Match based on prefix
+GET /products/_doc/_search
+{
+  "query": {
+    "prefix": {
+      "tags.keyword": "Vege"
+    }
+  }
+}
+
+Match based on wildcard
+GET /products/_doc/_search
+{
+  "query": {
+    "wildcard": {
+      "tags.keyword": "Veg?t*le"
+    }
+  }
+}
+
+Match based on regular expression
+GET /products/_doc/_search
+{
+  "query": {
+    "regexp": {
+      "tags.keyword": "Veget[a-zA-Z]+e"
+    }
+  }
+}
+
+
+
+

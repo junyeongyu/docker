@@ -1,0 +1,56 @@
+download
+curl -H "Content-Type: application/json" -XPOST "http://localhost:9200/recipes/_doc/_bulk?pretty" --data-binary "@test-data-recipe.json"
+
+GET /recipes/_doc/_search
+{
+	"query": {
+		"term": {
+			"": ""
+		}
+	}
+}
+
+GET /recipes/_doc/_mapping
+
+GET /recipes/_doc/_search
+{
+	"query": {
+		"match": {
+			"title": "Recipes with pasta or spaghetti"
+		}
+	}
+}
+
+GET /recipes/_doc/_search
+{
+	"query": {
+		"match": {
+			"title": {
+				"query": "Recipes with pasta or spaghetti",
+				"operator": "and"
+			}
+		}
+	}
+}
+
+GET /recipes/_doc/_search
+{
+	"query": {
+		"match": {
+			"title": {
+				"query": "pasta or spaghetti",
+				"operator": "and"
+			}
+		}
+	}
+}
+
+GET /recipes/_doc/_search
+{
+	"query": {
+		"multi_match": {
+				"query": "pasta",
+				"fields": ["title", "description"]
+		}
+	}
+}
